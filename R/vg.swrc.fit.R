@@ -5,7 +5,8 @@ vg_pred <- function(psi_obs,
                     theta_s = 0.4,
                     alpha = 1,
                     n = 2,
-                    plot = T) {
+                    plot = T,
+                    add.point.end = F) {
 
   if(!require(scales)){
     install.packages("scales")
@@ -44,9 +45,12 @@ vg_pred <- function(psi_obs,
 
 
   df <- data.frame(theta_obs, psi_obs)
-  df2 <- data.frame(theta_obs = 0.01, psi_obs = 1500)
 
-  df <- rbind(df2, df)
+  if(add.point.end == T){
+    df2 <- data.frame(theta_obs = 0.01, psi_obs = 1500)
+
+    df <- rbind(df2, df)
+  }
 
   if (psi_unit == "cmh2o") {
     df$psihcmh2o <- df$psi_obs

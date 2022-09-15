@@ -7,7 +7,7 @@ Fit and Van Genuchten's Soil Water Retention Curve on observed values with the l
 The function helps you to fit a soil water retention curve with Van Genuchten equation on your observed values with the least square method.
 }
 \usage{
-vg_pred(psi_obs, theta_obs, psi_unit, theta_r, theta_s, alpha, n, plot)
+vg_pred(psi_obs, theta_obs, psi_unit, theta_r, theta_s, alpha, n, plot, add.point.end)
 }
 
 \arguments{
@@ -33,6 +33,9 @@ vg_pred(psi_obs, theta_obs, psi_unit, theta_r, theta_s, alpha, n, plot)
 }
 
   \item{plot}{ Logical argument to return a plot of the soil water retention curve or only the predicted data (default is 'TRUE')
+}
+
+  \item{add.point.end}{ Logical argument to add a point of a value theta = 0.01 and psi = 1500 KPa (default is 'FALSE')
 }
 }
 
