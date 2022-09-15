@@ -4,6 +4,7 @@ if(!require(devtools)){
     install.packages("devtools")
     library(devtools)
 }
+
 install_github("gaussdarwin/vgswrc1")
 
 # To access the package from your library :
