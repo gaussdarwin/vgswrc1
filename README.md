@@ -1,5 +1,6 @@
 # To install the package on R :
 
+
 if(!require(devtools)){
 
     install.packages("devtools")
