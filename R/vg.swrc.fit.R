@@ -175,11 +175,11 @@ if (param[1] < 0) {
       theme_srcw
 
 
-    return(list(plot = p, data = pred))
+    return(list(plot = p, data = pred, parameter = param))
 
   }
   else{
-    return(pred)
+    return(pred, parameter = param)
   }
 
 }
