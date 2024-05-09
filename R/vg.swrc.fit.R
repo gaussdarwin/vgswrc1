@@ -12,7 +12,12 @@ vg_pred <- function(psi_obs,
     install.packages("scales")
     library(scales)
   }
-
+  
+  if(!require(minpack.lm)){
+    install.packages("minpack.lm")
+    library(minpack.lm)
+  }
+  
   if(!require(tidyverse)){
     install.packages("tidyverse")
     library(tidyverse)
@@ -65,30 +70,63 @@ vg_pred <- function(psi_obs,
   }
 
 
-  fit_vg <-
-    nls(
-      formula = theta_obs ~ theta_r + ((theta_s - theta_r) / ((
-        1 + (alpha * psihcmh2o) ^ n
-      ) ^ (1 - (
-        1 / n
-      )))),
-      data = df,
-      start = c(
-        theta_r = theta_r,
-        theta_s = theta_s,
-        alpha = alpha,
-        n = n
-      )
-    )
+fit_vg <- nlsLM(
+  formula = theta_obs ~ theta_r + ((theta_s - theta_r) / (
+    (1 + (alpha * psihcmh2o) ^ n) ^ (1 - (1 / n))
+  )),
+  start = list(
+    theta_r = theta_r,
+    theta_s = theta_s,
+    alpha = alpha,
+    n = n
+  ),
+  control = nls.lm.control(maxiter = 100),
+  data = df
+)
 
   param <- coefficients(fit_vg)
 
+
+
+if (param[1] < 0) {
+  
+  fit_vg <- nlsLM(
+    formula = theta_obs ~ theta_r + ((theta_s - theta_r) / (
+      (1 + (alpha * psihcmh2o) ^ n) ^ (1 - (1 / n))
+    )),
+    start = list(
+      theta_s = theta_s,
+      alpha = alpha,
+      n = n
+    ),
+    control = nls.lm.control(maxiter = 100),
+    data = df
+  )
+  
+  
+  fit_vg
+  
+  param <- coefficients(fit_vg)
+  
+  param
+  
+  pred <- vg_eq(
+    theta_r =  theta_r,
+    theta_s = param[1],
+    alpha = param[2],
+    n = param[3]
+  )
+
+}else{
+  
   pred <- vg_eq(
     theta_r =  param[1],
     theta_s = param[2],
     alpha = param[3],
     n = param[4]
   )
+}
+
 
 
   if (plot == T) {
